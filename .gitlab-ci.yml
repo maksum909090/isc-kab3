@@ -1,0 +1,42 @@
+image: python:latest
+services:
+- docker:20.10.16-dind
+variables:
+DOCKER_HOST: tcp://docker:2375
+stages:
+- test
+- build
+- deploy
+test_code:
+stage: test
+before_script:
+- pip install -r requirements.txt
+script:
+- cd simple_python_app
+- python -m pytest -v
+build_code:
+stage: build
+image: docker:20.10.16
+before_script:
+- docker login -u maksum909090 -p ${DOCKERHUB_TOKEN}
+script:
+- docker build -t maksum909090/ics-lab4:latest .
+- docker push maksum909090/ics-lab4:latest
+needs:
+- test_code
+build_code_with_hashtag:
+stage: build
+image: docker:20.10.16
+before_script:
+- docker login -u maksum909090 -p ${DOCKERHUB_TOKEN}
+script:
+- docker build -t maksum909090/ics-lab4:${CI_COMMIT_SHORT_SHA} .
+- docker push maksum909090/ics-lab4:${CI_COMMIT_SHORT_SHA}
+needs:
+- test_code
+print_student_info:
+stage: deploy
+script:
+- echo "Rovenchuk Maksum"
+needs:
+- build_code
