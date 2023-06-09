@@ -18,7 +18,7 @@ build_code:
 stage: build
 image: docker:20.10.16
 before_script:
-- docker login -u maksum909090 -p ${DOCKERHUB_TOKEN}
+- docker login -u maksum909090 -p ${dckr_pat_ZEfauWRL2A5l7sHzJy-RV10wrqY}
 script:
 - docker build -t maksum909090/ics-lab4:latest .
 - docker push maksum909090/ics-lab4:latest
@@ -28,7 +28,7 @@ build_code_with_hashtag:
 stage: build
 image: docker:20.10.16
 before_script:
-- docker login -u maksum909090 -p ${DOCKERHUB_TOKEN}
+- docker login -u maksum909090 -p ${dckr_pat_ZEfauWRL2A5l7sHzJy-RV10wrqY}
 script:
 - docker build -t maksum909090/ics-lab4:${CI_COMMIT_SHORT_SHA} .
 - docker push maksum909090/ics-lab4:${CI_COMMIT_SHORT_SHA}
